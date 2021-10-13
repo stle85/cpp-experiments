@@ -1,0 +1,16 @@
+BasedOnStyle: Google
+IndentWidth: 4
+IncludeBlocks: Merge
+IndentPPDirectives: BeforeHash
+NamespaceIndentation: All
+ReflowComments: true
+BinPackArguments: false
+BinPackParameters: false
+AccessModifierOffset: -4
+BreakConstructorInitializers: BeforeComma
+ConstructorInitializerAllOnOneLineOrOnePerLine: 'false'
+CompactNamespaces: true
+FixNamespaceComments: true
+NamespaceIndentation: None
+SortIncludes: false
+ColumnLimit: 100
