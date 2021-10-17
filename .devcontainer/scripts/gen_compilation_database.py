@@ -10,8 +10,8 @@ from pathlib import Path
 
 # This method is equivalent to https://github.com/grailbio/bazel-compilation-database/blob/master/generate.sh
 def generate_compilation_database(args):
-    # We need to download all remote outputs for generated source code. This option lives here to override those
-    # specified in bazelrc.
+    # We need to download all remote outputs for generated source code. 
+    # This option lives here to override those specified in bazelrc.
     bazel_options = shlex.split(os.environ.get("BAZEL_BUILD_OPTIONS", "")) + [
         "--remote_download_outputs=all",
     ]
@@ -72,8 +72,7 @@ def modify_compile_command(target, args):
         options += " -Wno-unused-function"
         # By treating external/envoy* as C++ files we are able to use this script from subrepos that
         # depend on Envoy targets.
-        if not target["file"].startswith("external/") or target["file"].startswith(
-                "external/envoy"):
+        if not target["file"].startswith("external/"):
             # *.h file is treated as C header by default while our headers files are all C++17.
             options = "-x c++ -std=c++17 -fexceptions " + options
 
@@ -83,7 +82,6 @@ def modify_compile_command(target, args):
 
 def fix_compilation_database(args, db):
     db = [modify_compile_command(target, args) for target in db if is_compile_target(target, args)]
-
     with open("compile_commands.json", "w") as db_file:
         json.dump(db, db_file, indent=2)
 
@@ -94,11 +92,6 @@ if __name__ == "__main__":
     parser.add_argument('--include_genfiles', action='store_true')
     parser.add_argument('--include_headers', action='store_true')
     parser.add_argument('--vscode', action='store_true')
-    parser.add_argument(
-        'bazel_targets',
-        nargs='*',
-        default=[
-            "//...",
-        ])
+    parser.add_argument('bazel_targets', nargs='*', default=["//..."])
     args = parser.parse_args()
     fix_compilation_database(args, generate_compilation_database(args))

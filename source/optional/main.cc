@@ -1,14 +1,6 @@
 /**
- * @file main.cc
- * @author Stanislav Lebedev (kugui@yandex.ru)
  * @brief
  *   Validate std::optional behaviour during compare with different types and values.
- *
- * @version 0.1
- * @date 2021-10-13
- *
- * @copyright Copyright (c) 2021
- *
  */
 
 #include <iostream>

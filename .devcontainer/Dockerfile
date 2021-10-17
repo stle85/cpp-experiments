@@ -22,26 +22,38 @@ ENV DEBIAN_FRONTEND=noninteractive
 # Python3 for scripts support
 RUN \
     apt update && \
+    apt -y --no-install-recommends install software-properties-common && \
+    wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | apt-key add - && \
+    add-apt-repository 'deb http://apt.llvm.org/focal/ llvm-toolchain-focal-12 main' && \    
+    apt update && \
     apt -y --no-install-recommends install \
-        clang \
-        clang-format \
-        clang-tidy \
-        clangd \
+        clang-12 \
+        clang-format-12 \
+        clang-tidy-12 \
+        clangd-12 \
+        lld-12 \
+        lldb-12 \
         curl \
         dos2unix \
         git \
-        lld \
-        lldb \
         openjdk-11-jdk-headless \
-        python3
+        python3 \
+        unixodbc-dev
+
 
 # Change C++ toolchain to Clang
 RUN \
-    update-alternatives --install /usr/bin/cc cc /usr/bin/clang 100 && \
-    update-alternatives --install /usr/bin/c89 c89 /usr/bin/clang 100 && \
-    update-alternatives --install /usr/bin/c99 c99 /usr/bin/clang 100 && \
-    update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++ 100 && \
-    update-alternatives --install /usr/bin/ld ld /usr/bin/lld 100
+    update-alternatives --install /usr/bin/clang clang /usr/bin/clang-12 100 && \
+    update-alternatives --install /usr/bin/clang++ clang++ /usr/bin/clang++-12 100 && \
+    update-alternatives --install /usr/bin/cc cc /usr/bin/clang-12 100 && \
+    update-alternatives --install /usr/bin/c89 c89 /usr/bin/clang-12 100 && \
+    update-alternatives --install /usr/bin/c99 c99 /usr/bin/clang-12 100 && \
+    update-alternatives --install /usr/bin/c++ c++ /usr/bin/clang++-12 100 && \
+    update-alternatives --install /usr/bin/ld ld /usr/bin/lld-12 100 && \
+    update-alternatives --install /usr/bin/lldb lldb /usr/bin/lldb-12 100 && \
+    update-alternatives --install /usr/bin/clangd clangd /usr/bin/clangd-12 100 && \
+    update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-12 100 && \
+    update-alternatives --install /usr/bin/clang-tidy clang-tidy /usr/bin/clang-tidy-12 100
 
 # Install bazel and bazel build tools
 RUN \
